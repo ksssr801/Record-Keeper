@@ -1,0 +1,15 @@
+<h2>Make Entries to Table</h2>
+
+<form action="/myapi/inserting-data-to-db">
+  <label for="entries">Enter value for entries: </label>&nbsp;&nbsp;
+  <input id="entries" type="number" name="entries" value="{{ entries }}">&nbsp;&nbsp;
+  <input type="submit" value="Submit">
+</form>
+{% if msg  %}
+    {{ msg }}
+    <br><br><br>
+{% endif %}
+
+<form action="/myapi/record-list">
+  <input type="submit" value="Get Record List">
+</form>

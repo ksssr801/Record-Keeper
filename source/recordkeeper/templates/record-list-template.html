@@ -1,0 +1,128 @@
+<html>
+<head>
+<style>
+table {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+.pagination {
+  display: inline-block;
+}
+
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+  border: 1px solid #ddd;
+  margin: 0 4px;
+  font-size: 16px
+}
+.pagination a.active {
+  background-color: rgb(143, 179, 235);
+  color: white;
+  border: 1px solid rgb(143, 179, 235);
+}
+
+.pagination a:hover:not(.active) {background-color: #ddd;}
+
+</style>
+</head>
+<body>
+
+<center><h2><u>Record Keeper</u></h2></center>
+
+<form action="/myapi/record-list">
+    <label for="full_name">Filter By Full Name: </label>&nbsp;&nbsp;
+    <input id="full_name" type="text" name="full_name" value="{{ full_name }}">&nbsp;&nbsp;
+    <input type="submit" value="Filter">
+</form>
+
+<form action="/myapi/record-list">
+    <label for="status">Filter By Status: </label>&nbsp;&nbsp;
+    <input id="status" type="text" name="status" value="{{ status }}">&nbsp;&nbsp;
+    <input type="submit" value="Filter">
+</form>
+<br>
+Records/Page : {{ data_count_per_page }}
+<br>
+<br>
+<center>
+  {% if person_dataset.has_other_pages %}
+    <div class="pagination">
+      {% if person_dataset.has_previous %}
+        <a href="?page={{ person_dataset.previous_page_number }}">&laquo;</a>
+      {% endif %}
+      {% for i in person_dataset.paginator.page_range %}
+        {% if person_dataset.number == i %}
+        <a class="active" href="?page={{ i }}">{{ i }}</a>
+        {% else %}
+          <a href="?page={{ i }}">{{ i }}</a>
+        {% endif %}
+      {% endfor %}
+      {% if person_dataset.has_next %}
+        <a href="?page={{ person_dataset.next_page_number }}">&raquo;</a>
+      {% endif %}
+    </div>
+  {% endif %}
+  </center>
+  <br>
+<table>
+  <tr>
+    <th>Person ID</th>
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>Person Status</th>
+    <th>Full Name</th>
+    <th>Is Adult</th>
+</tr>
+  {% for val in person_dataset %}
+  <tr>
+      <td>{{val.person_id}}</td>
+      <td>{{val.first_name}}</td>
+      <td>{{val.last_name}}</td>
+      <td>{{val.status}}</td>
+      <td>{{val.full_name}}</td>
+      <td>{{val.is_adult}}</td>
+  </tr>
+  {% endfor %}
+</table>
+<br>
+<center>
+{% if person_dataset.has_other_pages %}
+  <div class="pagination">
+    {% if person_dataset.has_previous %}
+      <a href="?page={{ person_dataset.previous_page_number }}">&laquo;</a>
+    {% else %}
+      <span class="disabled">&laquo;</span>
+    {% endif %}
+    {% for i in person_dataset.paginator.page_range %}
+      {% if person_dataset.number == i %}
+      <a class="active" href="?page={{ i }}">{{ i }}</a>
+      {% else %}
+        <a href="?page={{ i }}">{{ i }}</a>
+      {% endif %}
+    {% endfor %}
+    {% if person_dataset.has_next %}
+      <a href="?page={{ person_dataset.next_page_number }}">&raquo;</a>
+    {% else %}
+      <span class="disabled">&raquo;</span>
+    {% endif %}
+  </div>
+{% endif %}
+</center>
+
+</body>
+</html>
